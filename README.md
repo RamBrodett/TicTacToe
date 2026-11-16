@@ -51,3 +51,6 @@ vercel          # preview deployment
 vercel --prod   # production
 ```
 or push to GitHub and import the repository at vercel.com/new.
+
+## License
+Released under the [MIT License](LICENSE). You are free to use, copy, modify and share it.
