@@ -1,0 +1,181 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #f2e9d8;
+  --color-ink-muted: #b4aa97;
+  --color-brass: #d9a84e;
+  --color-brass-bright: #ffd27a;
+  --color-oak: #d39556;
+  --color-rust: #d0703a;
+  --color-steel: #9aa4aa;
+  --color-wall: #0f1214;
+
+  --font-display: var(--font-oswald), "Arial Narrow", sans-serif;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+}
+
+html {
+  color-scheme: dark;
+  background: var(--color-wall);
+}
+
+body {
+  background: var(--color-wall);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Board size: as large as possible while keeping the whole game on one phone screen. */
+.board-size {
+  width: clamp(232px, min(92vw, calc(100svh - 420px)), 520px);
+}
+@media (min-width: 1024px) {
+  .board-size {
+    width: clamp(340px, calc(100svh - 300px), 600px);
+  }
+}
+
+@layer components {
+  /* Machined steel nameplate used for all HUD chrome */
+  .plaque {
+    position: relative;
+    border-radius: 12px;
+    background:
+      linear-gradient(180deg, rgb(255 255 255 / 0.07), rgb(255 255 255 / 0) 40%),
+      linear-gradient(180deg, #2b3238, #1a1f23);
+    border: 1px solid #090b0c;
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.09),
+      inset 0 -1px 0 rgb(0 0 0 / 0.6),
+      0 8px 18px rgb(0 0 0 / 0.45);
+    transition:
+      box-shadow 200ms ease,
+      border-color 200ms ease;
+  }
+  .plaque-active {
+    border-color: #8a6420;
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.12),
+      inset 0 -1px 0 rgb(0 0 0 / 0.6),
+      0 0 0 2px rgb(217 168 78 / 0.85),
+      0 0 26px rgb(255 190 90 / 0.35),
+      0 8px 18px rgb(0 0 0 / 0.45);
+  }
+
+  .engraved {
+    text-shadow:
+      0 1px 0 rgb(0 0 0 / 0.85),
+      0 -1px 0 rgb(255 255 255 / 0.06);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 48px;
+    padding: 0 1.4rem;
+    border-radius: 10px;
+    font-family: var(--font-display);
+    font-size: 1rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    transition:
+      transform 80ms ease,
+      box-shadow 120ms ease,
+      filter 120ms ease;
+    touch-action: manipulation;
+  }
+  .btn:active {
+    transform: translateY(1px);
+  }
+  .btn-brass {
+    color: #24170a;
+    background: linear-gradient(180deg, #f6d68b 0%, #dcab52 45%, #b9842e 100%);
+    border: 1px solid #6e4b14;
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.55),
+      inset 0 -2px 0 rgb(0 0 0 / 0.25),
+      0 6px 14px rgb(0 0 0 / 0.5);
+  }
+  .btn-brass:hover {
+    filter: brightness(1.06);
+  }
+  .btn-steel {
+    color: var(--color-ink);
+    background: linear-gradient(180deg, #3a434a, #232a2f);
+    border: 1px solid #0b0d0e;
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.12),
+      0 6px 14px rgb(0 0 0 / 0.45);
+  }
+  .btn-steel:hover {
+    filter: brightness(1.12);
+  }
+
+  .seg {
+    min-height: 40px;
+    min-width: 7.5rem;
+    padding: 0 1rem;
+    border-radius: 8px;
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+    transition:
+      background 150ms ease,
+      color 150ms ease;
+  }
+  .seg:hover {
+    color: var(--color-ink);
+  }
+  .seg[aria-pressed="true"] {
+    color: #24170a;
+    background: linear-gradient(180deg, #f2d088, #c99540);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.5),
+      0 2px 6px rgb(0 0 0 / 0.5);
+  }
+}
+
+/* One clear, high-contrast focus style for every control */
+:where(button, [href], [tabindex]):focus-visible {
+  outline: 3px solid var(--color-brass-bright);
+  outline-offset: 3px;
+}
+.cell:focus-visible {
+  outline-offset: -4px;
+  border-radius: 10px;
+}
+
+@keyframes beckon {
+  0%,
+  100% {
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.55),
+      0 6px 14px rgb(0 0 0 / 0.5),
+      0 0 0 0 rgb(255 200 100 / 0.55);
+  }
+  50% {
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.55),
+      0 6px 14px rgb(0 0 0 / 0.5),
+      0 0 0 8px rgb(255 200 100 / 0);
+  }
+}
+.beckon {
+  animation: beckon 1.6s ease-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .beckon {
+    animation: none;
+  }
+  .btn,
+  .plaque,
+  .seg {
+    transition: none;
+  }
+}
